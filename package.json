@@ -1,0 +1,26 @@
+{
+  "name": "@pixelcube/customswitch",
+  "version": "1.0.0",
+  "description": "Custom Switch for react native application",
+  "main": "intex.tsx",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yashpyraj/CustomSwitch.git"
+  },
+  "keywords": [
+    "react,react-native,switch,UI,toggle,component,accessibility"
+  ],
+  "author": "react-native",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yashpyraj/CustomSwitch/issues"
+  },
+  "homepage": "https://github.com/yashpyraj/CustomSwitch#readme",
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-native": "^0.71.3"
+  }
+}
