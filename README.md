@@ -1,204 +1,117 @@
-# Custom Switch React Native Component
+# CustomSwitch
 
-Custom Switch is a highly customizable and performant React Native component that allows you to create switches with different styles, animations, and functionalities. It provides a rich set of props that enables you to customize the switch's appearance, behavior, and accessibility.
+> A thin, styleable wrapper around React Native's built-in `<Switch>` — colour, size, label and container styling through props, with a typed API.
+
+[![npm](https://img.shields.io/npm/v/@pixelcube/customswitch.svg?style=flat&color=cb3837&logo=npm)](https://www.npmjs.com/package/@pixelcube/customswitch)
+[![platform](https://img.shields.io/badge/platform-android%20%7C%20ios-lightgrey.svg)](https://reactnative.dev)
+[![types](https://img.shields.io/badge/types-TypeScript-3178C6.svg)](https://www.typescriptlang.org)
+
+---
+
+## What this is
+
+React Native's `<Switch>` accepts `trackColor` and `thumbColor` and little else. Restyling it — padding, a border, a label, a container background, a different scale — means wrapping it every time.
+
+`CustomSwitch` is that wrapper, done once: a memoised component that passes colour and sizing through to the native switch and handles the label and container layout around it.
+
+It renders the **platform-native switch**, so it keeps native accessibility and platform feel. It is not a from-scratch reimplementation.
 
 ## Installation
 
-To install Custom Switch, you can use npm or yarn:
+```sh
+npm install @pixelcube/customswitch
+```
 
-```bash
-npm install react-native-custom-switch --save
+```sh
+yarn add @pixelcube/customswitch
 ```
-or
-```bash
-yarn add react-native-custom-switch
-```
+
+No native linking — it depends only on `react` and `react-native`.
 
 ## Usage
-Import CustomSwitch in your React Native project:
-```jsx
-import CustomSwitch from 'react-native-custom-switch';
+
+```tsx
+import { useState } from 'react';
+import CustomSwitch from '@pixelcube/customswitch';
+
+export default function Settings() {
+  const [enabled, setEnabled] = useState(false);
+
+  return (
+    <CustomSwitch
+      isEnabled={enabled}
+      onToggle={setEnabled}
+      label="Push notifications"
+      trackColorOn="#4ade80"
+      trackColorOff="#767577"
+      thumbColorOn="#ffffff"
+      thumbColorOff="#f4f3f4"
+      padding={12}
+      borderRadius={8}
+      backgroundColor="#111827"
+      labelStyle={{ color: '#e5e7eb' }}
+    />
+  );
+}
 ```
-Then, use the component with the required props:
-```jsx
-<CustomSwitch
-  isEnabled={isEnabled}
-  onToggle={onToggle}
-  containerStyle={containerStyle}
-  switchStyle={switchStyle}
-  backgroundColor={backgroundColor}
-  borderRadius={borderRadius}
-  padding={padding}
-  borderWidth={borderWidth}
-  thumbColorEnabled={thumbColorEnabled}
-  thumbColorDisabled={thumbColorDisabled}
-  trackColorEnabled={trackColorEnabled}
-  trackColorDisabled={trackColorDisabled}
-  disabled={disabled}
-  label={label}
-  trackColorEnabledCustom={trackColorEnabledCustom}
-  thumbSize={thumbSize}
-  thumbImageEnabled={thumbImageEnabled}
-  thumbImageDisabled={thumbImageDisabled}
-  labelStyle={labelStyle}
-  thumbAnimationDuration={thumbAnimationDuration}
-  thumbColorOn={thumbColorOn}
-  thumbColorOff={thumbColorOff}
-  trackColorOn={trackColorOn}
-  trackColorOff={trackColorOff}
-/>
-```
+
 ## Props
-isEnabled (required)
-A boolean value that represents whether the switch is on or off.
 
-### onToggle (required)
-A callback function that is called when the switch is toggled. It receives a boolean value as a parameter that indicates whether the switch is on or off.
+### Required
 
-### containerStyle
-An object that represents the style of the switch container. It accepts the same props as the React Native View component.
+| Prop | Type | Description |
+|---|---|---|
+| `isEnabled` | `boolean` | Current value. Controlled — the component holds no internal state. |
+| `onToggle` | `(isEnabled: boolean) => void` | Called with the **next** value. Not called while `disabled`. |
 
-### switchStyle
-An object that represents the style of the switch. It accepts the same props as the React Native Switch component.
+### Colour
 
-### backgroundColor
-A string that represents the background color of the switch container.
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `thumbColorOn` | `string` | `#f5dd4b` | Thumb colour when on |
+| `thumbColorOff` | `string` | `#f4f3f4` | Thumb colour when off |
+| `trackColorOn` | `string` | `#81b0ff` | Track colour when on |
+| `trackColorOff` | `string` | `#767577` | Track colour when off |
+| `trackColorEnabledCustom` | `string` | — | Legacy alias for `trackColorOn`; `trackColorOn` wins if both are set |
 
-### borderRadius
-A number that represents the border radius of the switch container.
+### Layout and container
 
-### padding
-A number that represents the padding of the switch container.
+| Prop | Type | Description |
+|---|---|---|
+| `containerStyle` | `StyleProp<ViewStyle>` | Style for the wrapping row |
+| `backgroundColor` | `string` | Container background |
+| `borderRadius` | `number` | Container corner radius |
+| `padding` | `number` | Container padding |
+| `borderWidth` | `number` | Container border width |
+| `switchStyle` | `StyleProp<SwitchProps>` | Style applied to the switch itself |
+| `thumbSize` | `number` | **Scale factor**, not pixels — applied as `scaleX`/`scaleY` on the switch. `1` is native size; `1.2` is 20% larger. |
 
-### borderWidth
-A number that represents the border width of the switch container.
+### Label and state
 
-### thumbColorEnabled
-A string that represents the thumb color of the switch when it's enabled.
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `label` | `string` | — | Text rendered after the switch, and used as the `accessibilityLabel` |
+| `labelStyle` | `StyleProp<ViewStyle>` | — | Style for the label text |
+| `disabled` | `boolean` | `false` | Blocks `onToggle` and disables the native switch |
 
-### thumbColorDisabled
-A string that represents the thumb color of the switch when it's disabled.
+## Accessibility
 
-### trackColorEnabled
-A string that represents the track color of the switch when it's enabled.
+The container sets `accessible`, and `label` is forwarded to the native switch as `accessibilityLabel`, so screen readers announce the control with its name and on/off state. If you render no `label`, supply your own labelling from the parent.
 
-### trackColorDisabled
-A string that represents the track color of the switch when it's disabled.
+## Known limitations
 
-### disabled
-A boolean value that represents whether the switch is disabled or not.
+Honest notes on the current version rather than a longer prop table:
 
-### label
-A string that represents the label of the switch.
+- **`thumbAnimationDuration` is accepted but inert.** The animation driver exists in the source but is not wired to value changes, so the thumb does not animate independently of the platform switch's own transition.
+- **Six declared props are not implemented:** `thumbColorEnabled`, `thumbColorDisabled`, `trackColorEnabled`, `trackColorDisabled`, `thumbImageEnabled`, `thumbImageDisabled`. They typecheck and are ignored at runtime — use the `*On` / `*Off` colour props instead. Thumb images are not supported.
+- **Decorative thumb/track views** are rendered absolutely over the native switch and may be visible depending on your container sizing.
+- `package.json` `main` currently points at `intex.tsx` (typo) — see [issues](https://github.com/yashpyraj/CustomSwitch/issues).
 
-### trackColorEnabledCustom
-A string that represents the track color of the switch when it's enabled and the trackColorEnabled prop is not set.
+## Requirements
 
-### thumbSize
-A number that represents the size of the switch's thumb.
+- React 18+
+- React Native 0.71+
 
-### thumbImageEnabled
-An ImageSourcePropType that represents the image of the switch's thumb when it's enabled.
+## License
 
-### thumbImageDisabled
-An ImageSourcePropType that represents the image of the switch's thumb when it's disabled.
-
-### labelStyle
-An object that represents the style of the switch's label. It accepts the same props as the React Native Text component.
-
-### thumbAnimationDuration
-A number that represents the duration of the switch's thumb animation.
-
-### thumbColorOn
-A string that represents the thumb color of the switch when it's on. Overrides thumbColorEnabled if both are set.
-
-### thumbColorOff
-A string that represents the thumb color of the switch when it's off. Overrides thumbColorDisabled if both are set.
-
-### trackColorOn
-A string that represents the track color of the switch when it's on. Overrides trackColorEnabled if both are set.
-
-### trackColorOff
-A string that represents the track color of the switch when it's off. Overrides trackColorDisabled if both are set.
-
-## Example Usage:
-Here is an example of how you can use the CustomSwitch component:
-
-```jsx
-import React, { useState } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
-import CustomSwitch from 'react-native-custom-switch';
-
-const App = () => {
-const [isEnabled, setIsEnabled] = useState(false);
-
-const onToggle = (value) => {
-setIsEnabled(value);
-};
-
-const containerStyle = {
-width: 60,
-height: 30,
-borderRadius: 15,
-padding: 5,
-backgroundColor: '#ccc',
-};
-
-const switchStyle = {
-backgroundColor: 'white',
-borderWidth: 2,
-borderColor: '#ddd',
-width: 20,
-height: 20,
-borderRadius: 10,
-};
-
-return (
-<View style={styles.container}>
-<Text style={styles.label}>Custom Switch</Text>
-<CustomSwitch
-     isEnabled={isEnabled}
-     onToggle={onToggle}
-     containerStyle={containerStyle}
-     switchStyle={switchStyle}
-     thumbColorEnabled="#4cd137"
-     thumbColorDisabled="#e84118"
-     trackColorEnabled="#a5deba"
-     trackColorDisabled="#f5b7b1"
-     label="Toggle Me"
-     labelStyle={styles.labelStyle}
-     thumbSize={18}
-   />
-</View>
-);
-};
-
-const styles = StyleSheet.create({
-container: {
-flex: 1,
-justifyContent: 'center',
-alignItems: 'center',
-backgroundColor: '#fff',
-},
-label: {
-fontSize: 20,
-fontWeight: 'bold',
-marginBottom: 20,
-},
-labelStyle: {
-color: '#333',
-fontSize: 14,
-},
-});
-
-export default App;
-
-```
-In this example, we have created a simple custom switch with a custom container style, switch style, and other props to customize its appearance and functionality. The onToggle function is used to update the state of the switch when it is toggled. The label prop is used to add a label to the switch, and labelStyle is used to style the label text.
-
-## Conclusion:
-
-CustomSwitch is a powerful and flexible React Native component that allows you to create highly customizable and performant switches with ease. It provides a rich set of props that enables you to customize the switch's appearance, behavior, and accessibility according to your needs. With CustomSwitch, you can create switches that fit perfectly into your app's design and provide a seamless user experience.
-
-
-
+ISC © [Yash Raj](https://github.com/yashpyraj)
