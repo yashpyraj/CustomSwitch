@@ -1,26 +1,45 @@
 {
   "name": "@pixelcube/customswitch",
-  "version": "1.0.0",
-  "description": "Custom Switch for react native application",
-  "main": "intex.tsx",
+  "version": "2.0.0",
+  "description": "Styleable, animated switch component for React Native with a fully typed prop API",
+  "main": "index.tsx",
+  "react-native": "index.tsx",
+  "source": "index.tsx",
+  "types": "index.tsx",
+  "files": [
+    "index.tsx",
+    "README.md"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "typecheck": "tsc --noEmit"
   },
+  "keywords": [
+    "react",
+    "react-native",
+    "switch",
+    "toggle",
+    "ui",
+    "component",
+    "animated",
+    "accessibility",
+    "typescript"
+  ],
+  "author": "Yash Raj <yraj20081999@gmail.com> (https://github.com/yashpyraj)",
+  "license": "ISC",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/yashpyraj/CustomSwitch.git"
   },
-  "keywords": [
-    "react,react-native,switch,UI,toggle,component,accessibility"
-  ],
-  "author": "react-native",
-  "license": "ISC",
   "bugs": {
     "url": "https://github.com/yashpyraj/CustomSwitch/issues"
   },
   "homepage": "https://github.com/yashpyraj/CustomSwitch#readme",
-  "dependencies": {
-    "react": "^18.2.0",
-    "react-native": "^0.71.3"
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-native": ">=0.71.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "typescript": "^5.3.0"
   }
 }
